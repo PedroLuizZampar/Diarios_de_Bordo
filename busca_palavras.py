@@ -18,12 +18,7 @@ def buscar_palavra_em_diretorio(diretorio_raiz, palavra_chave, linhas_contexto=2
             extensao = os.path.splitext(arquivo)[1].lower()
 
             try:
-                if extensao == '.txt':
-                    with open(caminho_arquivo, 'r', encoding='utf-8') as f:
-                        linhas = f.readlines()
-                        verificar_janelas(linhas, palavra_chave_lower, caminho_formatado, "TXT", linhas_contexto)
-
-                elif extensao == '.pdf':
+                if extensao == '.pdf':
                     doc = fitz.open(caminho_arquivo)
                     todas_linhas = []
                     for pagina in doc:
@@ -31,7 +26,10 @@ def buscar_palavra_em_diretorio(diretorio_raiz, palavra_chave, linhas_contexto=2
                         todas_linhas.extend(texto.split('\n'))
                     doc.close()
                     verificar_janelas(todas_linhas, palavra_chave_lower, caminho_formatado, "PDF", linhas_contexto)
-
+                else:
+                    with open(caminho_arquivo, 'r', encoding='utf-8') as f:
+                        linhas = f.readlines()
+                        verificar_janelas(linhas, palavra_chave_lower, caminho_formatado, "TXT", linhas_contexto)
             except Exception as e:
                 print(f'Erro ao processar o arquivo {caminho_arquivo}: {e}')
 
@@ -40,10 +38,15 @@ def verificar_janelas(linhas, palavra_chave_lower, caminho_formatado, tipo_arqui
     global encontrou_arquivos
 
     total = len(linhas)
+    ultima_ocorrencia = float('-inf')  # inicializa com valor fora do intervalo para evitar falsos positivos
+
     for i in range(total):
         bloco = ' '.join(linhas[i:i + linhas_contexto + 1]).replace('\n', ' ')
         if palavra_chave_lower in bloco.lower():
+            if i - ultima_ocorrencia <= linhas_contexto:
+                continue  # ignora se a última ocorrência foi muito próxima
             encontrou_arquivos = True
+            ultima_ocorrencia = i
             print(f'\nArquivo: file:///{caminho_formatado} \n({tipo_arquivo}) Linha {i + 1}: {bloco.strip()[:300]}...\n\n --- \n ---')
 
 if __name__ == "__main__":
