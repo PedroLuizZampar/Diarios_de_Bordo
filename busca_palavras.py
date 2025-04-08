@@ -34,20 +34,16 @@ def buscar_palavra_em_diretorio(diretorio_raiz, palavra_chave, linhas_contexto=2
                 print(f'Erro ao processar o arquivo {caminho_arquivo}: {e}')
 
 def verificar_janelas(linhas, palavra_chave_lower, caminho_formatado, tipo_arquivo, linhas_contexto):
-    """Verifica blocos de linhas consecutivas para encontrar palavras-chave divididas por quebra de linha."""
+    """Verifica cada linha individualmente para encontrar palavras-chave."""
     global encontrou_arquivos
 
     total = len(linhas)
-    ultima_ocorrencia = float('-inf')  # inicializa com valor fora do intervalo para evitar falsos positivos
 
     for i in range(total):
-        bloco = ' '.join(linhas[i:i + linhas_contexto + 1]).replace('\n', ' ')
-        if palavra_chave_lower in bloco.lower():
-            if i - ultima_ocorrencia <= linhas_contexto:
-                continue  # ignora se a última ocorrência foi muito próxima
+        linha_atual = linhas[i].strip()  # Remove espaços extras e quebras de linha
+        if palavra_chave_lower in linha_atual.lower():
             encontrou_arquivos = True
-            ultima_ocorrencia = i
-            print(f'\nArquivo: file:///{caminho_formatado} \n({tipo_arquivo}) Linha {i + 1}: {bloco.strip()[:300]}...\n\n --- \n ---')
+            print(f'\nArquivo: file:///{caminho_formatado} \n({tipo_arquivo}) Linha {i + 1}: {linha_atual[:300]}...\n\n --- \n ---')
 
 if __name__ == "__main__":
     diretorio = input("Digite o diretório raiz para realizar a busca (0 para usar o padrão): ")
