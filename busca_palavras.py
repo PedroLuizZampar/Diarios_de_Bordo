@@ -48,7 +48,7 @@ def verificar_janelas(linhas, palavra_chave_lower, caminho_formatado, tipo_arqui
 if __name__ == "__main__":
     diretorio = input("Digite o diretório raiz para realizar a busca (0 para usar o padrão): ")
     if diretorio == "0":
-        diretorio = "C:\\Users\\pedroluiz.zampar\\Documents\\Diarios_de_Bordo"
+        diretorio = "C:\\Users\\Pedro\\Documents\\Diarios_de_Bordo"
     palavra = input("Digite a palavra-chave a ser buscada: ")
     buscar_palavra_em_diretorio(diretorio, palavra)
     if not encontrou_arquivos:

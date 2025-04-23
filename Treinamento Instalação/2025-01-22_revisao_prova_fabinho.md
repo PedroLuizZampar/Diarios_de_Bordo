@@ -27,7 +27,7 @@
         - CNPJ do Cliente
         - Instância do banco
         - Para fazer o pedido, é necessário ser um `usuário @`
-    - Serviço de licensas valida a quantidade de licensas contratadas
+    - Serviço de licenças valida a quantidade de licenças contratadas
 
 ---
 
